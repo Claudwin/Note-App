@@ -22,7 +22,7 @@ class App extends Component {
       showNote: ! this.state.showNote
     })
   }
-  getNotes = () => {
+  getNotes = (data) => {
     axios.get(urlFor('notes'))
     .then((res) => this.setState({notes: res.data}))
     
@@ -31,6 +31,9 @@ class App extends Component {
     axios.get(urlFor(`notes/${id}`))
     .then((res) => this.setState({ note: res.data, showNote: true }))
     .catch((err) => console.log(err.response.data));
+  }
+  submitNote = (data) => {
+    console.log(data);
   }
   render() {
 
@@ -42,6 +45,7 @@ class App extends Component {
           { showNote ? 
             <Note 
               note={note}
+              submitNote={this.submitNote}
             /> 
             : 
             <List 
