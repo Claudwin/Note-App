@@ -2,29 +2,27 @@ import React from 'react';
 
 class Note extends React.Component {
 
-  renderTagForm() {
-    if (!this.props.newTag) {
-      return (
-        <span>
-          <i
-          className="tag-button material-icons"
-          onClick={() => this.props.showTagForm()}
-        >
-            add circle
-        </i>
-        </span>
-      );
-    } else {
-      return (
-        <form onSubmit={(e) => this.onTagSubmit(e)}> 
-          <input
-            className="tag-input"
-            type="text"
-            placeholder="Tag Name..."
-            ref={(input) => this.name = input } 
-           />
-        </form>
-      );
+  renderTagForm(note) {
+    if (note.id !== undefined) {
+      if (!this.props.newTag) {
+        return (
+          <span>
+            Tag your note:
+            <i className="tag-button material-icons"  onClick={() => this.props.showTagForm()}>add circle</i>
+          </span>
+        );
+      } else {
+        return (
+          <form onSubmit={(e) => this.onTagSubmit(e)}>
+            <input
+              className="tag-input"
+              type="text"
+              placeholder="Tag Name..."
+              ref={(input) => this.name = input}
+             />
+          </form>
+        );
+      }
     }
   }
   onSubmit(e) {
@@ -34,11 +32,15 @@ class Note extends React.Component {
       content: this.content.value
     }
     this.props.submitNote(formData, this.props.note.id);
+    this.props.closeTagForm();
   }
   onTagSubmit(e) {
     e.preventDefault();
-    console.log(this.name.value);
-    this.props.closeTagForm();
+    const formData = {
+      name: this.name.value
+    };
+    this.props.submitTag(formData, this.props.note.id)
+    console.log(formData);
   }
   render() {
     const { note } = this.props;
@@ -63,7 +65,7 @@ class Note extends React.Component {
         </form>
           <div className="tag-container">
             <div className="tag-button-container">
-              {this.renderTagForm()}
+              {this.renderTagForm(note)}
             </div>
           </div>
       </div>
