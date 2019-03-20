@@ -16,11 +16,12 @@ class Note extends React.Component {
       );
     } else {
       return (
-        <form>
+        <form onSubmit={(e) => this.onTagSubmit(e)}> 
           <input
             className="tag-input"
             type="text"
             placeholder="Tag Name..."
+            ref={(input) => this.name = input } 
            />
         </form>
       );
@@ -33,6 +34,11 @@ class Note extends React.Component {
       content: this.content.value
     }
     this.props.submitNote(formData, this.props.note.id);
+  }
+  onTagSubmit(e) {
+    e.preventDefault();
+    console.log(this.name.value);
+    this.props.closeTagForm();
   }
   render() {
     const { note } = this.props;
